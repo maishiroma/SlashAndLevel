@@ -1,4 +1,4 @@
-# Slash and Level Remasterd
+# Slash and Level Remastered
 
 > Fun fact; the original Slash and Level was a text adventure I made back in HS!
 

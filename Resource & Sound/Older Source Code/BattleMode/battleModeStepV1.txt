@@ -1,0 +1,48 @@
+///Here's the bulk of the work of the object.
+//After a turn passed, displayOptions will be reactivated, allowing access to the options again.
+if(displayOptions == true){//It first checks if you can choose an option.
+    if(createdObjects == false){
+      instance_create(x+250,y+60,obj_ItemOption);//Spawns fight option
+      instance_create(x+350,y+60,obj_RunOption);//spawns item option
+      instance_create(x+300,y+100,obj_FightOption);//spawns run option
+      createdObjects = true;//This prevents from the options from ever being spawned again
+   }
+   else{
+        instance_activate_object(obj_FightOption);
+        instance_activate_object(obj_ItemOption);
+        instance_activate_object(obj_RunOption);
+        //reactivate the three option objects to prepare for selection
+   }
+    var left_c = mouse_check_button_released(mb_left);
+    if(canSelect == true){
+        if(position_meeting(mouse_x,mouse_y,(obj_FightOption))){
+            effect_create_above(ef_ellipse,obj_FightOption.x,obj_FightOption.y,0.2,c_yellow);
+            if(left_c == 1){
+                //here's a script is called to start the fight.
+                displayOptions = false;
+            }
+        }
+        else if(position_meeting(mouse_x,mouse_y,(obj_ItemOption))){
+            effect_create_above(ef_ellipse,obj_ItemOption.x,obj_ItemOption.y,0.2,c_yellow);
+            if(left_c == 1){
+                instance_create(room_width/2,room_height/2+20,obj_BattleInv);
+                canSelect = false;
+            }
+        }
+       else if(position_meeting(mouse_x,mouse_y,(obj_RunOption))){
+        effect_create_above(ef_ellipse,obj_RunOption.x,obj_RunOption.y,0.2,c_yellow);
+            if(left_c == 1){
+             //here's a script is called to flee the fight.
+                script_execute(scr_runAwayOption,obj_Player,self);
+                displayOptions = false;
+            }
+        }
+    }
+}
+else{
+    instance_deactivate_object(obj_FightOption);
+    instance_deactivate_object(obj_ItemOption);
+    instance_deactivate_object(obj_RunOption); 
+    //Deactivate the three options to prevent selecting an option
+}
+

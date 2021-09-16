@@ -1,0 +1,82 @@
+/*  This script takes care of all the actions in spawning in a shop keeper in the room. In order for one
+    to appear, a random number will be generated from 0-10. If the number is 7-10, all of the enemies
+    will disspaear in the room and instead a shop keeper will be spawned in instead. 
+    
+    This script will also handle what items the shop keeper will have.
+*/
+var rand = script_execute(scr_ranNumbs,10);
+if(rand >= 7){
+    var xCord = 192;
+    var yCord = 64; 
+    
+    /*  Shop Database. All availabe items that can be found in shops are here. These items are signifigantly
+        stronger than items found randomely. Use same naming convention. 
+        Format: (i is a number that's not used yet)
+        [i,0] = name of item (the variable name is "name")
+        [i,1] = description of item (the variable name is "desc")
+        [i,2] = the power or effect number of said item (the variable name is "effectOrPow")
+        [i,3] = the shop price of said item. (Selling price is this halved) (the variable name is "sellBuyPrice")
+        [i,4] = type of item. Either "weapon", "heal", or "effect" (the variable name is "typeOfItem")
+        [i,5] = sprite of item
+    */
+    itemList[0,0] = "";
+    for(i = 0; i < 3; i++){ //The 3 is the number of items in the database. This is flexible
+        for(j = 0; j < 6; j++){
+            itemList[i,j] = "";
+        }
+    }
+    itemList[0,0] = "Hammer";
+    itemList[0,1] = "A weapon. Pow: 20";
+    itemList[0,2] = 20;
+    itemList[0,3] = 100;
+    itemList[0,4] = "weapon";
+    itemList[0,5] = spr_WeaponI;
+    itemList[1,0] = "Turky";
+    itemList[1,1] = "A food. heals 20";
+    itemList[1,2] = 20;
+    itemList[1,3] = 300;
+    itemList[1,4] = "heal";
+    itemList[1,5] = spr_HealI;
+    itemList[2,0] = "buff";
+    itemList[2,1] = "A buff. buffs you up";
+    itemList[2,2] = "power";
+    itemList[2,3] = 200;
+    itemList[2,4] = "effect";
+    itemList[2,5] = spr_EffectI;
+    itemList[3,0] = "tas";
+    itemList[3,1] = "A weapom. Pow: 30";
+    itemList[3,2] = 30;
+    itemList[3,3] = 400;
+    itemList[3,4] = "weapon";
+    itemList[3,5] = spr_WeaponI;
+    
+   switch(rand){
+        case 7: break;
+        case 8:
+            xCord = 416;
+            yCord = 64;
+            break;
+        case 9:
+            xCord = 192;
+            yCord = 352;
+        case 10:
+            xCord = 416;
+            yCord = 352;
+   }
+   var thisShop = instance_create(xCord,yCord,obj_Shop);
+   for(i = 0; i < 3; i += 1){
+        var length = script_execute(scr_ranNumbs,array_height_2d(itemList));
+        while(length >= array_height_2d(itemList) && (itemList[length,0] == thisShop.shopInv[i,0])){
+            length = script_execute(scr_ranNumbs,array_height_2d(itemList));
+        }
+        var temp = instance_create(0,0,obj_Item);
+        thisShop.shopInv[i,0] = itemList[length,0];
+        thisShop.shopInv[i,1] = itemList[length,1];
+        thisShop.shopInv[i,2] = itemList[length,2];
+        thisShop.shopInv[i,3] = itemList[length,3];
+        thisShop.shopInv[i,4] = itemList[length,4];
+        thisShop.shopInv[i,5] = itemList[length,5];
+        thisShop.shopInv[i,6] = temp.id;
+        with(temp){ instance_destroy();   }
+    }
+}

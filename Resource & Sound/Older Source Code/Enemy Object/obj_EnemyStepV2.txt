@@ -1,0 +1,57 @@
+///Behavior of the enemy. Changes if it's fighting or not.
+if(global.inBattle == false){
+    persistent = false; //so that enemeis you escaped from can't glitch into the battle room
+    //Normally, enemies wander around the map aimlessly.
+    if(currMovement > 0){
+      switch(direc){//This determins which direction the enemy is moving in. 
+         case 0:
+            hsp = moveESpeed;
+            break;
+         case 45:
+            hsp = moveESpeed;
+            vsp = -moveESpeed;
+            break;
+          case 90:
+            vsp = -moveESpeed;
+            break;
+         case 135:
+            hsp = -moveESpeed;
+            vsp = -moveESpeed;
+            break;
+         case 180:
+            hsp = -moveESpeed;
+            break;
+         case 225:
+            hsp = -moveESpeed;
+            vsp = moveESpeed;
+             break;
+         case 270:
+            vsp = moveESpeed;
+            break;
+         case 315:
+            hsp = moveESpeed;
+            vsp = moveESpeed;
+            break;
+         case 360:
+            hsp = moveESpeed;
+            break;
+      }
+      x += script_execute(scr_HorizontalCollision,self);
+      y += script_execute(scr_VerticalCollision,self);
+      currMovement--;
+    }
+    else{
+        direc = script_execute(scr_randomDirec);
+        hsp = 0;
+        vsp = 0;
+        currMovement = movementTicker;
+    }
+}
+else{
+    if(currHealth <= 0){
+        //Activate the enemy death sequence
+        //Here, the enemy drops exp and money and sometimes an item.
+        obj_battleMode.enemyDefeat = true;
+    }
+}
+

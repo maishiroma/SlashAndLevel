@@ -1,0 +1,17 @@
+///This script runs whenthe player needs to pick up an item.
+for(i = 0; i < obj_Player.maxInvSlots; i += 1){
+    if(obj_Player.inventory[i,0] == "" ){    //if that slot is nothing;
+        obj_Player.inventory[i,0] = argument0.name;
+        obj_Player.inventory[i,1] = argument0.desc;
+        obj_Player.inventory[i,2] = argument0.effectOrPow;
+        obj_Player.inventory[i,3] = argument0.sellBuyPrice;
+        obj_Player.inventory[i,4] = argument0.typeOfItem;
+        obj_Player.inventory[i,5] = argument0.sprite_index;
+        argument0.gotten = true;
+        show_message("Obtained " + argument0.name + "!");
+        i = obj_Player.maxInvSlots;
+    }
+}
+
+
+

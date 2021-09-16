@@ -1,0 +1,5 @@
+draw_set_halign(fa_center);
+draw_set_font(fnt_menu);
+draw_set_color(c_teal);
+draw_text(x+50, y+1, "In Solo Duo (Alpha v2)");
+draw_text(x+50, y+30, "Hit 'Enter' to begin a new game");

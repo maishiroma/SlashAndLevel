@@ -1,0 +1,16 @@
+///Display status
+if(display == true){
+    var width = room_width/2;
+    var height = room_height/2;
+    draw_self();
+    draw_text(width - 30,height - 145, "Status");
+    draw_text(width - 150,height - 120,"Level " + string(obj_Player.currLevel));
+    draw_text(width - 150,height - 90,"Health " + string(obj_Player.currHealth) + "/" + string(obj_Player.maxHealth));
+    draw_text(width - 150,height - 60,"Exp ");
+    draw_text(width - 150,height - 30,"To Next Level ");
+    draw_text(width - 150,height,"Weapon ");
+    draw_text(width - 50,height + 30,"Inventory");
+    for(i = 0; i < obj_Player.maxInvSlots; i += 1){
+        draw_text(width - 150,height+60+(30*i),obj_Player.inventory[i,0]);
+    }
+}

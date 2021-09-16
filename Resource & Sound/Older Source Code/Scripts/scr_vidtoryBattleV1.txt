@@ -1,0 +1,15 @@
+///This script handles the player defeating the enemy!
+
+/*When the player defeats the enemy, they will automatically collect the exp and cash dropped by the enemy.
+* If the player has enough exp to level up, the level up script will play. Afterwards, the player is sent
+* back to the main room, without the enemy obviously. If the enemy dropped an item, the item will
+* appear in the enemy's place.
+* arg0 = player object; arg1 = battleMode object, arg2 = enemy object
+*/
+//For now, let's make it simple
+show_message("You won!");
+room_goto(testRoom);
+argument0.x = argument0.currentX;
+argument0.y = argument0.currentY;
+global.inBattle = false;
+with(argument2){    instance_destroy();   }

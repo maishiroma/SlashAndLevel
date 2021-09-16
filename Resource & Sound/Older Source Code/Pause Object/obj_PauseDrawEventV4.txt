@@ -1,0 +1,20 @@
+///Display status
+if(display == true){
+    var width = room_width/2;
+    var height = (room_height/2) - 60;
+    draw_self();
+    draw_text(width - 30,height - 145, "Status Menu");
+    draw_text(20,height - 120,"Level: " + string(obj_Player.currLevel));
+    draw_text(20,height - 90,"Health: " + string(obj_Player.currHealth) + "/" + string(obj_Player.maxHealth));
+    draw_text(20,height - 60,"Exp: " + string(obj_Player.currExp));
+    draw_text(20,height - 30,"To Next Level: " + string(obj_Player.expToNextLevel));
+    draw_text(20,height,"Equipped Weapon: " + obj_Player.equippedWeapon);
+    draw_text(width + 50,height,"Raw Power: " + string(obj_Player.attPow) + " Attack Power: " + string(obj_Player.attWithWeaponPow));
+    draw_text(width - 30,height + 30,"Inventory");
+    for(i = 0; i < obj_Player.maxInvSlots; i += 1){
+        if(obj_Player.inventory[i,0] != ""){
+            draw_text(30,height+70+(30*i),obj_Player.inventory[i,0]);   //Draws name of item
+            draw_text(width - 170,height+70+(30*i),obj_Player.inventory[i,1]);  //Draws description
+        }
+    }
+}

@@ -1,0 +1,73 @@
+/*  Controls how enemies spawn in the room. This script contains all of the monsters as well as spawning them. 
+    This also determins if a shop will spawn.
+*/
+
+//First, a number will decide if a shop will spawn. Else, the script will spawn monsters.
+var randomChance = script_execute(scr_ranNumbs,10);
+if(randomChance >= 7){
+    script_execute(scr_spawnShop,randomChance);  
+}
+else{
+    //An enemyData base list will be formed, similar to the item database. 
+    for(i = 0; i < 3; i++){ //The only number here implies how many enemies are there. 
+        for(j = 0; j < 6; j++){ //The only number here means how many slots of information an enemy can have.
+            enemyList[i,j] = "";
+        }
+    
+    }
+    //The enemy database. Refer to below comments for hoe to use. 
+    enemyList[0,0] = "Zambie";  //enemy name
+    enemyList[0,1] = 50;        //enemy maxHp
+    enemyList[0,2] = 1;         //enemy power
+    enemyList[0,3] = 1;         //enemy level
+    enemyList[0,4] = "normal";  //enemy type. normal doesn't drop rare items while "rare", drops rare items
+    enemyList[0,5] = spr_enemy; //The forward facing sprite of the enemy. 
+    enemyList[1,0] = "Smammy";
+    enemyList[1,1] = 70;
+    enemyList[1,2] = 1;
+    enemyList[1,3] = 1;
+    enemyList[1,4] = "normal";
+    enemyList[1,5] = spr_enemy;
+    enemyList[2,0] = "Woahzes";
+    enemyList[2,1] = 100;
+    enemyList[2,2] = 2;
+    enemyList[2,3] = 1;
+    enemyList[2,4] = "rare";
+    enemyList[2,5] = spr_enemy;
+    
+    //Then, three enemies at random will be choosen to be spawned in the room. 
+    var limit = 2;
+    while(limit > 0){
+        //This first part finds a spot ont he mapo that is NOT occupied. 
+        var xLoc = 0;
+        var yLoc = 0;
+        found = false;
+        while(found == false){
+            xLoc = script_execute(scr_ranNumbs,room_width);
+            yLoc = script_execute(scr_ranNumbs,room_height);
+            if(place_empty(xLoc,yLoc)){
+                found = true;
+            }
+        }
+        //Now it chooses the enemy and spawns it in the room. 
+        var length = script_execute(scr_ranNumbs,array_height_2d(enemyList));
+        while(length >= array_height_2d(enemyList)){
+            length = script_execute(scr_ranNumbs,array_height_2d(enemyList));
+        }
+        var this = instance_create(xLoc,yLoc,obj_Enemy);
+        this.characterName = enemyList[length,0];
+        this.maxHealth = enemyList[length,1];
+        this.currHealth = this.maxHealth;
+        this.attPow = enemyList[length,2];
+        this.currLevel = enemyList[length,3];
+        this.characterType = enemyList[length,4];
+        this.sprite_index = enemyList[length,5];
+        this.origWeapPow = script_execute(scr_determineEnemyPower);
+        this.attWithWeaponPow = (this.attPow * 10) + this.origWeapPow;
+        this.direc = script_execute(scr_randomDirec);
+        limit--;
+        if(obj_Player.currLevel > this.currLevel){
+            script_execute(scr_LevelUp,this,false);
+        }
+    }
+}

@@ -1,0 +1,48 @@
+///This script takes care of a battle turn in the game! 
+/* First, a random number is generated from 1-10. Any number below 6 means the player moves first. All other numbers
+*  make the enemy move first. After one side moves, the opposing side moves. Damage is calculated by subtracting
+*  the power of the character with their weapon to the target's health. Death of a character is handled in their
+*  own step function. After both sides moved, the battle menu options show again. 
+*  Arg0 = the player, Arg1 = the enemy, Arg2 = the battle mode object
+*/
+
+//Random number to determine order
+var turnOrder = script_execute(scr_ranNumbs,10);
+var iteration = 2;          //This is used to keep track whose turn is it to move.
+var playerMoved = false;    //this variable determins the order of the code
+if(turnOrder <= 6){
+    playerMoved = true;
+}
+//To account for any animations during attacking, each side has a time frame of 5 seconds in game for their movement
+while(iteration != 0){
+    if(argument2.alreadyMoved == true){  //if the player already did an action
+            show_message("The " + argument1.characterName + " busted the player!")
+            show_message("The Player took " + string(argument1.attWithWeaponPow) + " damage!");
+            argument0.currHealth = argument0.currHealth - argument1.attWithWeaponPow;
+            repeat(150){   }
+            playerMoved = true;
+            iteration -= 2;
+    }
+    else{
+        if(playerMoved == false){
+            show_message("The " + argument1.characterName + " busted the player!")
+            show_message("The Player took " + string(argument1.attWithWeaponPow) + " damage!");
+            argument0.currHealth = argument0.currHealth - argument1.attWithWeaponPow;
+            repeat(150){   }
+            playerMoved = true;
+            iteration--;
+            if(argument0.currHealth <= 0){  iteration--;    }   //if the enemy did a killing blwo, you can't attack
+        }
+        else{
+            show_message("The player charged at the foe!")
+            show_message("The " + argument1.characterName + " took " + string(argument0.attWithWeaponPow) + " damage!");
+            argument1.currHealth = argument1.currHealth - argument0.attWithWeaponPow;
+            repeat(150){   }
+            playerMoved = false;
+            iteration--;
+            if(argument1.currHealth <= 0){  iteration--;    }   //if you did a killing blow, the enemy can't move
+        }
+    } 
+}
+//After the actions are done, the menu reappears
+argument2.displayOptions = true;

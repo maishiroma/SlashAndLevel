@@ -1,0 +1,57 @@
+///Controls Player movement
+key_right = keyboard_check(vk_right);
+key_left = -keyboard_check(vk_left);
+key_down = keyboard_check(vk_down);
+key_up = -keyboard_check(vk_up);
+
+if(!instance_exists(obj_Pause) && dead == false){
+    visible = true;
+    if(currHealth < 0){
+        dead = true;
+        script_execute(scr_gameOver,self,obj_Enemy);
+    }
+    else if(global.inBattle == false){
+        image_alpha = 1;
+        if(key_right == 1){
+            sprite_index = spr_charS;
+            image_xscale = 1;
+            image_speed = 0.2;
+            direc = right;
+        }
+        else if(key_left == -1){
+             sprite_index = spr_charS;
+             image_xscale = -1;
+             image_speed = 0.2;
+             direc = left;
+        }
+        else if(key_up == -1){
+             sprite_index = spr_charB;
+             image_speed = 0.2;
+             direc = up;
+        }
+        else if(key_down == 1){
+             sprite_index = spr_charF;
+             image_speed = 0.2;
+             direc = down;
+        }
+        else{
+            moveX = 0;
+            moveY = 0;
+            image_speed = 0;
+        }
+        moveX = key_left + key_right;
+        moveY = key_up + key_down;
+        hsp = moveX * mSpeed;
+        vsp = moveY * mSpeed;
+        //This code takes care of all collisions
+        x += script_execute(scr_HorizontalCollision,self);
+        y += script_execute(scr_VerticalCollision,self);
+    }
+   if(flee == true){
+        image_alpha = 0.5;
+   }
+}
+else if(instance_exists(obj_Pause)){
+    image_speed = 0;
+    visible = false;
+}

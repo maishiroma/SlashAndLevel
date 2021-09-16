@@ -1,0 +1,30 @@
+///Behavior of the enemy. Changes if it's fighting or not.
+if(global.inBattle == false){
+    //Normally, enemies wander around the map aimlessly.
+    //Temp code. NEED BETTER AI.
+        random_set_seed(randomize());
+        var ran = script_execute(scr_ranNumbs,3);
+        var negH = script_execute(scr_ranNumbs,2);
+        var negV = script_execute(scr_ranNumbs,2);
+        if(ran == 1){
+            hsp = 5;
+        }
+        else if(ran == 2){
+            vsp = 5;
+        }
+        else{
+             hsp = 5;
+             vsp = 5;
+        }
+        if(negH == 1){
+            hsp = -hsp;
+        }
+        if(negV == 1){
+            vsp = -vsp;
+        }
+        x += script_execute(scr_HorizontalCollision,self);
+        y += script_execute(scr_VerticalCollision,self);
+}
+else{
+    //In battle, the monsters do a turn system.
+}

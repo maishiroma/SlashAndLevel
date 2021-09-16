@@ -1,0 +1,26 @@
+///These only appear on the pause screen.
+if(!instance_exists(obj_Pause)){
+    instance_destroy();
+}
+else{
+    //Left click to use an item, right click to delete it
+    left_c = mouse_check_button_pressed(mb_left);
+    right_c = -mouse_check_button_pressed(mb_right);
+    action = left_c + right_c;
+    if(position_meeting(mouse_x,mouse_y,self)){
+        image_alpha = 0.7;
+        if(action > 0){
+            image_alpha = 0.5;
+            script_execute(scr_useItem,self,id);
+        }
+        else if(action < 0){
+            image_alpha = 0.5;
+            script_execute(scr_tossItem,self,id);
+        }
+    }
+    else{
+        image_alpha = 1;
+        x = xstart;
+        y = ystart;
+    }
+}   
